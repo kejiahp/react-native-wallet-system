@@ -11,63 +11,64 @@ import { WelcomeStackNavigationProp } from "../navigation/WelcomeStack";
 export default function Welcome() {
   const navigation = useNavigation<WelcomeStackNavigationProp>();
 
+  //   const { params } = useRoute<RoutePropType>();
+  //   console.log(params.lol)
+
   return (
-    <>
-      <ImageBackground
-        style={styles.background}
-        resizeMode="cover"
-        source={require("../../assets/images/MobileWallet.jpg")}
+    <ImageBackground
+      style={styles.background}
+      resizeMode="cover"
+      source={require("../../assets/images/MobileWallet.jpg")}
+    >
+      <LinearGradient
+        // Background Linear Gradient
+        colors={[
+          // "transparent",
+          "rgba(0,0,0,0.2)",
+          "rgba(0,0,0,0.3)",
+          "rgba(0,0,0,0.4)",
+          "rgba(0,0,0,0.5)",
+          "rgba(0,0,0,0.7)",
+        ]}
+        style={styles.gradient}
       >
-        <LinearGradient
-          // Background Linear Gradient
-          colors={[
-            // "transparent",
-            "rgba(0,0,0,0.2)",
-            "rgba(0,0,0,0.3)",
-            "rgba(0,0,0,0.4)",
-            "rgba(0,0,0,0.5)",
-            "rgba(0,0,0,0.7)",
-          ]}
-          style={styles.gradient}
-        >
-          <Label style={styles.title}>
-            <Text style={{ color: COLORS.primary }}>put</Text> money,{" "}
-            <Text style={{ color: COLORS.secondary }}>get</Text> money,{" "}
-            <Text style={{ color: COLORS.tertiary }}>lock</Text> money{" "}
+        <Label style={styles.title}>
+          <Text style={{ color: COLORS.primary }}>put</Text> money,{" "}
+          <Text style={{ color: COLORS.secondary }}>get</Text> money,{" "}
+          <Text style={{ color: COLORS.gray200 }}>lock</Text> money{" "}
+        </Label>
+        <View style={styles.island}>
+          <Label
+            style={{
+              color: COLORS.white,
+              fontSize: SIZES.small,
+              textAlign: "center",
+            }}
+          >
+            Let us be the ones to manage your wallet
           </Label>
-          <View style={styles.island}>
+          <Button
+            size="lg"
+            varaint="default"
+            onPress={() => navigation.navigate("CreateAcct")}
+          >
+            <Label style={{ color: COLORS.white }}>Let's Begin</Label>
+          </Button>
+          <Button varaint="link">
             <Label
               style={{
                 color: COLORS.white,
                 fontSize: SIZES.small,
                 textAlign: "center",
+                textDecorationLine: "underline",
               }}
             >
-              Let us be the ones to manage your wallet
+              Already have an acount ?
             </Label>
-            <Button
-              size="lg"
-              varaint="default"
-              onPress={() => navigation.navigate("CreateAcct")}
-            >
-              <Label style={{ color: COLORS.white }}>Let's Begin</Label>
-            </Button>
-            <Button varaint="link">
-              <Label
-                style={{
-                  color: COLORS.white,
-                  fontSize: SIZES.small,
-                  textAlign: "center",
-                  textDecorationLine: "underline",
-                }}
-              >
-                Already have an acount ?
-              </Label>
-            </Button>
-          </View>
-        </LinearGradient>
-      </ImageBackground>
-    </>
+          </Button>
+        </View>
+      </LinearGradient>
+    </ImageBackground>
   );
 }
 
@@ -78,7 +79,6 @@ const styles = ScaledSheet.create({
   gradient: {
     flex: 1,
     justifyContent: "space-between",
-    borderWidth: "5@s",
     padding: "20@s",
   },
   title: {
