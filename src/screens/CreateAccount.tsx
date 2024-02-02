@@ -4,7 +4,7 @@ import Label from "../ui/Label";
 import { ScaledSheet } from "react-native-size-matters";
 import { FONT, SIZES } from "../ui/style";
 import { ThemeContext } from "../context/ThemeContext";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import Button from "../ui/Button";
 import { FormInputField } from "../ui/formFields/FormFields";
 import { useForm, Controller } from "react-hook-form";
@@ -17,7 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Feather } from "@expo/vector-icons";
 import { Platform } from "react-native";
 import { BASE_COLORS } from "../ui/theme";
-import { Utilities } from "../utils/utilities";
+import { notify } from "../ui/CustomToast";
 
 export default function CreateAccount() {
   const { COLORS } = useContext(ThemeContext);
@@ -84,14 +84,19 @@ export default function CreateAccount() {
       return;
     }
 
-    console.warn({
-      image: {
-        name: image[0].fileName,
-        uri: image[0].uri,
-        type: image[0].mimeType,
-      },
-      ...inputData,
-    });
+    // Toast.show({
+    //   type: "info",
+    //   text1: "WOrd",
+    // });
+
+    // console.warn({
+    //   image: {
+    //     name: image[0].fileName,
+    //     uri: image[0].uri,
+    //     type: image[0].mimeType,
+    //   },
+    //   ...inputData,
+    // });
   };
 
   return (
@@ -163,14 +168,19 @@ export default function CreateAccount() {
           defaultValue=""
         />
 
-        <Button onPress={handleSubmit(onSubmitHandler)} isLoading>
+        <Button
+          onPress={handleSubmit(onSubmitHandler)}
+          style={{
+            width: 200,
+          }}
+        >
           <Label
             style={{
               fontSize: SIZES.medium,
               fontFamily: FONT.bold,
             }}
           >
-            Create Account
+            Continue
           </Label>
         </Button>
       </View>

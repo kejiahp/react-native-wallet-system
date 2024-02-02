@@ -2,12 +2,18 @@ import "react-native-gesture-handler";
 
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "./src/context/ThemeContext";
 import WelcomeStackNavigator from "./src/navigation/WelcomeStack";
+import Toast from "react-native-toast-message";
+import { CustomToast } from "./src/ui/CustomToast";
+
+const toastConfig = {
+  custom: CustomToast,
+};
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,12 +34,13 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <NavigationContainer>
-      <ThemeProvider>
+    <ThemeProvider>
+      <NavigationContainer>
         <View onLayout={prepare} />
         <StatusBar style="auto" />
         <WelcomeStackNavigator />
-      </ThemeProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+      <Toast config={toastConfig} />
+    </ThemeProvider>
   );
 }
