@@ -1,5 +1,5 @@
-class Utilities {
-  public isValidImgUrl(url: string) {
+export class Utilities {
+  public static isValidImgUrl(url: string) {
     if (!url) return false;
     else {
       const pattern = new RegExp(

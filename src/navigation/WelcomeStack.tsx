@@ -7,8 +7,12 @@ import Welcome from "../screens/Welcome";
 import CreateAccount from "../screens/CreateAccount";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
-import { SIZES } from "../ui/style";
+import { FONT, SIZES } from "../ui/style";
 import { ThemeContext } from "../context/ThemeContext";
+import { View } from "react-native";
+import Label from "../ui/Label";
+import { BASE_COLORS } from "../ui/theme";
+import { ScaledSheet } from "react-native-size-matters";
 
 type WelcomeStackParamList = {
   Welcome: undefined;
@@ -39,7 +43,7 @@ export default function WelcomeStackNavigator() {
         component={CreateAccount}
         options={{
           headerStyle: {
-            backgroundColor: COLORS.white,
+            backgroundColor: COLORS.bgWhite,
           },
           headerLeftContainerStyle: {
             paddingLeft: SIZES.small,
@@ -47,15 +51,35 @@ export default function WelcomeStackNavigator() {
           headerShadowVisible: false,
           headerTitle: "",
           headerLeft: (props) => (
-            <Feather
-              name="chevron-left"
-              size={30}
-              color={COLORS.black}
-              onPress={() => navigation.goBack()}
-            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Feather
+                name="chevron-left"
+                size={30}
+                color={COLORS.primary}
+                onPress={() => navigation.goBack()}
+              />
+              <Label style={[styles.title, { color: COLORS.primary }]}>
+                Sign Up
+              </Label>
+            </View>
           ),
         }}
       />
     </Stack.Navigator>
   );
 }
+
+const styles = ScaledSheet.create({
+  title: {
+    marginLeft: "10@s",
+    fontFamily: FONT.bold,
+    fontWeight: "800",
+    fontSize: SIZES.large,
+    textAlign: "center",
+  },
+});

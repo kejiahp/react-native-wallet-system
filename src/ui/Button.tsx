@@ -1,6 +1,5 @@
 import {
   Pressable,
-  ActivityIndicator,
   StyleProp,
   ViewStyle,
   PressableProps,
@@ -20,7 +19,6 @@ interface Props extends PressableProps {
 function Button({
   varaint,
   size,
-  isLoading,
   style,
   children,
   ...props
@@ -40,11 +38,10 @@ function Button({
         size === "icon" && buttonSize.icon,
         props.disabled && { opacity: 0.3 },
         style,
-        pressed && { opacity: 0.7 },
+        pressed && { opacity: 0.6 },
       ]}
       {...props}
     >
-      {isLoading && <ActivityIndicator size={"large"} color={COLORS.white} />}
       {children}
     </Pressable>
   );
@@ -63,7 +60,7 @@ const buttonVariants = StyleSheet.create({
     backgroundColor: COLORS.destructive,
   },
   link: {
-    backfaceVisibility: "hidden",
+    backgroundColor: "transparent",
   },
 });
 
@@ -95,7 +92,7 @@ const styles = ScaledSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 4,
-    elevation: 3,
+    borderRadius: "10@s",
+    elevation: "3@s",
   },
 });

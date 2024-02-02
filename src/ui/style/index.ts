@@ -1,17 +1,5 @@
 import { scale } from "react-native-size-matters";
-
-const COLORS = {
-  primary: "#0ea5e9",
-  secondary: "#a855f7",
-  tertiary: "#082f49",
-  destructive: "#ef4444",
-
-  gray100: "#6b7280",
-  gray200: "#4b5563",
-
-  black: "#000",
-  white: "#FFF",
-};
+import { BASE_COLORS as COLORS } from "../theme";
 
 const FONT = {
   regular: "NunitoRegular",
@@ -21,8 +9,9 @@ const FONT = {
 };
 
 const SIZES = {
-  xSmall: scale(10),
-  small: scale(12),
+  xxSmall: scale(10),
+  xsmall: scale(12),
+  small: scale(14),
   medium: scale(16),
   large: scale(20),
   xLarge: scale(24),

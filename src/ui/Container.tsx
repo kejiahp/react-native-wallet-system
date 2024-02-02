@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
   },
   innerView: {
     flex: 1,
-    paddingHorizontal: scale(10),
+    paddingHorizontal: scale(20),
   },
 });
