@@ -2,7 +2,7 @@ import { View } from "react-native";
 import React, { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import Toast, { BaseToastProps, ToastProps } from "react-native-toast-message";
-import { FONT, SIZES } from "./style";
+import { FONT, SIZES, SHADOWS } from "./style";
 import Label from "./Label";
 
 type Props = {
@@ -19,8 +19,10 @@ export function CustomToast({ props, ...otherProps }: Props) {
       style={{
         minHeight: SIZES.xxLarge * 2,
         width: "80%",
-        backgroundColor: COLORS.bgBlack,
+        backgroundColor: COLORS.bgWhite,
         borderRadius: SIZES.xxSmall,
+        zIndex: 10,
+        ...SHADOWS.medium,
         padding: SIZES.xsmall,
         borderLeftWidth: 10,
         borderLeftColor:
@@ -33,7 +35,7 @@ export function CustomToast({ props, ...otherProps }: Props) {
     >
       <Label
         style={{
-          color: COLORS.white,
+          color: COLORS.black,
           fontSize: SIZES.small,
           fontFamily: FONT.bold,
         }}

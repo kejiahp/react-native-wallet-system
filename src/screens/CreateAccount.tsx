@@ -81,22 +81,21 @@ export default function CreateAccount() {
 
   const onSubmitHandler = (inputData: RegistrationValidationSchemaType) => {
     if (!image) {
+      notify({
+        variant: "error",
+        title: "Your profile picture is required",
+      });
       return;
     }
 
-    // Toast.show({
-    //   type: "info",
-    //   text1: "WOrd",
-    // });
-
-    // console.warn({
-    //   image: {
-    //     name: image[0].fileName,
-    //     uri: image[0].uri,
-    //     type: image[0].mimeType,
-    //   },
-    //   ...inputData,
-    // });
+    console.warn({
+      profilePhoto: {
+        name: image[0].fileName,
+        uri: image[0].uri,
+        type: image[0].mimeType,
+      },
+      ...inputData,
+    });
   };
 
   return (
