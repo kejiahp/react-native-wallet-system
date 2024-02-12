@@ -59,6 +59,7 @@ export function notify({
   position?: ToastProps["position"];
 }) {
   Toast.show({
+    bottomOffset: 60,
     type: "custom",
     position: position,
     text1: title,

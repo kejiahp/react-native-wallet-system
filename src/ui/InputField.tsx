@@ -15,45 +15,46 @@ interface Props extends TextInputProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export default function InputField({
-  style,
-  onFocus,
-  onBlur,
-  ...props
-}: Props) {
-  const [focused, setFocused] = useState(false);
-  const custOnFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    setFocused(!focused);
-    if (onFocus) {
-      onFocus(e);
-    }
-  };
+const InputField = React.forwardRef<TextInput, Props>(
+  ({ style, onFocus, onBlur, ...props }, ref) => {
+    const [focused, setFocused] = useState(false);
+    const custOnFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      setFocused(!focused);
+      if (onFocus) {
+        onFocus(e);
+      }
+    };
 
-  const custOnBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    setFocused(!focused);
-    if (onBlur) {
-      onBlur(e);
-    }
-  };
+    const custOnBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      setFocused(!focused);
+      if (onBlur) {
+        onBlur(e);
+      }
+    };
 
-  const { COLORS } = useContext(ThemeContext);
-  return (
-    <TextInput
-      onFocus={custOnFocus}
-      onBlur={custOnBlur}
-      style={[
-        styles.inputField,
-        {
-          color: COLORS.black,
-          borderColor: focused ? COLORS.primary : COLORS.black,
-        },
-        style,
-      ]}
-      placeholderTextColor={COLORS.gray100}
-      {...props}
-    />
-  );
-}
+    const { COLORS } = useContext(ThemeContext);
+
+    return (
+      <TextInput
+        ref={ref}
+        onFocus={custOnFocus}
+        onBlur={custOnBlur}
+        style={[
+          styles.inputField,
+          {
+            color: COLORS.black,
+            borderColor: focused ? COLORS.primary : COLORS.black,
+          },
+          style,
+        ]}
+        placeholderTextColor={COLORS.gray100}
+        {...props}
+      />
+    );
+  }
+);
+
+export default InputField;
 
 const styles = ScaledSheet.create({
   inputField: {
