@@ -21,3 +21,11 @@ export async function getUserData(): Promise<{
     throw e;
   }
 }
+
+export async function deleteUserData() {
+  try {
+    await AsyncStorage.removeItem(asynckeys.acct_creation);
+  } catch (e) {
+    throw e;
+  }
+}

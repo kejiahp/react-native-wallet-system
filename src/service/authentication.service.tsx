@@ -16,8 +16,6 @@ export async function createUserService(data: FormData) {
     });
     return res.data;
   } catch (error: any) {
-    console.log(error);
-
     throw error;
   }
 }
@@ -29,6 +27,24 @@ export async function verifyAccountService({
 }) {
   try {
     const res = await publicRequest.post(`/auth/email-verification`, data);
+    return res.data;
+  } catch (error: any) {
+    throw error;
+  }
+}
+
+export async function loginService({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) {
+  try {
+    const res = await publicRequest.post(`/auth/login`, {
+      email: email,
+      password: password,
+    });
     return res.data;
   } catch (error: any) {
     throw error;

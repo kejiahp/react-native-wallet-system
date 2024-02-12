@@ -35,7 +35,9 @@ export default function CreateAccount() {
   const getUserCallBack = useCallback(() => {
     getUserData()
       .then((res) => {
-        if (res && res.email_verified === false) {
+        if (res && res.email_verified === true) {
+          navigation.navigate("Login");
+        } else if (res && res.email_verified === false) {
           navigation.navigate("AcctVerification");
         }
       })
@@ -235,7 +237,7 @@ export default function CreateAccount() {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <FormInputField
-                label="Create Password"
+                label="Password"
                 placeholder="Example123@"
                 secureTextEntry
                 onBlur={onBlur}

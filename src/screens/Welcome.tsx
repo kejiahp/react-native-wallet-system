@@ -24,13 +24,7 @@ export default function Welcome() {
     >
       <LinearGradient
         // Background Linear Gradient
-        colors={[
-          // "transparent",
-          "rgba(0,0,0,0.2)",
-          "rgba(0,0,0,0.3)",
-          // "rgba(0,0,0,0.4)",
-          // "rgba(0,0,0,0.5)",
-        ]}
+        colors={["rgba(0,0,0,0.2)", "rgba(0,0,0,0.3)"]}
         style={styles.gradient}
       >
         <Label style={[styles.title]}>
@@ -61,7 +55,7 @@ export default function Welcome() {
               Let's Begin
             </Label>
           </Button>
-          <Button varaint="link">
+          <Button varaint="link" onPress={() => navigation.navigate("Login")}>
             <Label
               style={{
                 fontFamily: FONT.bold,

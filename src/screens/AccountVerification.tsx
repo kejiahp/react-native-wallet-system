@@ -18,7 +18,12 @@ import Button from "../ui/Button";
 import { useMutation } from "@tanstack/react-query";
 import { verifyAccountService } from "../service/authentication.service";
 import { notify } from "../ui/CustomToast";
-import { getUserData } from "../storage/welcome.storage";
+import {
+  deleteUserData,
+  getUserData,
+  setUser,
+} from "../storage/welcome.storage";
+import { AxiosError } from "axios";
 
 export default function AccountVerification() {
   //otp dependencies
@@ -56,6 +61,7 @@ export default function AccountVerification() {
             title: "Account already verified",
             variant: "success",
           });
+          navigation.navigate("Login");
         } else {
           setUserData(res);
         }
@@ -73,11 +79,64 @@ export default function AccountVerification() {
 
   const verifyAcctMtn = useMutation({
     mutationFn: verifyAccountService,
-    onSuccess: () => {
+    onSuccess: (data) => {
       notify({
         variant: "success",
-        title: "Account created successfully",
+        title: data?.message || "Account created successfully",
       });
+      deleteUserData()
+        .then((res) => {
+          setUser({
+            email: userData.email,
+            email_verified: true,
+          })
+            .then(() => {
+              navigation.navigate("Login");
+            })
+            .catch(() => {
+              notify({
+                variant: "error",
+                title: "Oops something went wrong",
+                children: (
+                  <Label style={{ fontSize: SIZES.xsmall }}>
+                    failed to store user data
+                  </Label>
+                ),
+              });
+            });
+        })
+        .catch(() => {
+          console.log("User data delete failed");
+        });
+    },
+    onError: (error: any) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.data.errors) {
+          notify({
+            variant: "error",
+            title: error?.response?.data?.message || "Something went wrong",
+            children: (
+              <View>
+                {error.response?.data.errors.map((item: any, index: number) => (
+                  <Label key={index} style={{ fontSize: SIZES.xsmall }}>
+                    {item.message}
+                  </Label>
+                ))}
+              </View>
+            ),
+          });
+        } else {
+          notify({
+            variant: "error",
+            title: error?.response?.data?.message || "Something went wrong",
+          });
+        }
+      } else {
+        notify({
+          variant: "error",
+          title: error?.response?.data?.message || "Something went wrong",
+        });
+      }
     },
   });
 
@@ -136,10 +195,6 @@ export default function AccountVerification() {
               )}
               <Label style={{ fontFamily: FONT.bold }}>Sign Up</Label>
             </View>
-          </Button>
-
-          <Button onPress={() => navigation.navigate("Login")}>
-            <Label>Login page</Label>
           </Button>
         </View>
       </Pressable>
