@@ -4,6 +4,8 @@ import {
   createContext,
   useState,
 } from "react";
+import { deleteFromSecureStore } from "../storage/secure.storage";
+import { securekeys } from "../utils/async.keys";
 
 type AuthStateType = {
   accessToken: string | undefined;
@@ -34,12 +36,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
     authenticated: false,
   });
 
-  const logOut = () =>
+  const logOut = async () => {
+    await deleteFromSecureStore(securekeys.auth_tokens);
     setAuthState({
       accessToken: undefined,
       refreshToken: undefined,
       authenticated: false,
     });
+  };
 
   return (
     <AuthContext.Provider value={{ authState, setAuthState, logOut }}>

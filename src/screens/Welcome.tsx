@@ -32,6 +32,7 @@ export default function Welcome() {
           <Text style={{ color: COLORS.secondary }}>get</Text> money,{" "}
           <Text style={{ color: COLORS.gray200 }}>lock</Text> money{" "}
         </Label>
+
         <View style={styles.island}>
           <Label
             style={{

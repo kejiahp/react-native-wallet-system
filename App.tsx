@@ -1,51 +1,67 @@
 import "react-native-gesture-handler";
 
-import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { useCallback } from "react";
-import { View } from "react-native";
-import * as SplashScreen from "expo-splash-screen";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { ThemeProvider } from "./src/context/ThemeContext";
 import WelcomeStackNavigator from "./src/navigation/WelcomeStack";
 import Toast from "react-native-toast-message";
 import { CustomToast } from "./src/ui/CustomToast";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { AuthContext } from "./src/context/AuthContext";
+import Spinner from "./src/components/Spinner";
+import { getFromSecureStore } from "./src/storage/secure.storage";
+import { securekeys } from "./src/utils/async.keys";
 
 const toastConfig = {
   custom: CustomToast,
 };
 
-SplashScreen.preventAutoHideAsync();
-
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    NunitoBold: require("./assets/fonts/NunitoBold.ttf"),
-    NunitoRegular: require("./assets/fonts/NunitoRegular.ttf"),
-    NunitoMedium: require("./assets/fonts/NunitoMedium.ttf"),
-    NunitoItalic: require("./assets/fonts/NunitoItalic.ttf"),
-  });
+  const [authStatusLoading, setAuthStatusLoading] = useState<
+    "loading" | "error" | "success"
+  >("loading");
+  const { authState, setAuthState } = useContext(AuthContext);
 
-  const prepare = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
+  const checkIfSessionExist = useCallback(async () => {
+    try {
+      const value = await getFromSecureStore(securekeys.auth_tokens);
+      if (!value) {
+        throw new Error("session not found in secure store");
+      } else {
+        const jwtTokens = JSON.parse(value);
+
+        setAuthState({
+          accessToken: jwtTokens.accessToken,
+          refreshToken: jwtTokens.refreshToken,
+          authenticated: true,
+        });
+      }
+      setAuthStatusLoading("success");
+    } catch (error: any) {
+      console.log(`Keychain Error: ${error.message}`);
+      setAuthStatusLoading("error");
+
+      setAuthState({
+        accessToken: undefined,
+        refreshToken: undefined,
+        authenticated: false,
+      });
     }
-  }, [fontsLoaded]);
+  }, []);
 
-  if (!fontsLoaded) return null;
+  useEffect(() => {
+    checkIfSessionExist();
+  }, [checkIfSessionExist]);
+
+  if (authStatusLoading === "loading") {
+    return <Spinner />;
+  }
 
   return (
-    <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <NavigationContainer>
-          <View onLayout={prepare} />
-          <StatusBar style="auto" />
-          <WelcomeStackNavigator />
-        </NavigationContainer>
-        <Toast config={toastConfig} />
-      </QueryClientProvider>
-    </ThemeProvider>
+    <>
+      <NavigationContainer>
+        <WelcomeStackNavigator />
+      </NavigationContainer>
+      <Toast config={toastConfig} />
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 
 const BASE_URL = "https://gmw-taa.com";
 const API_VERSION = "api/v1";
@@ -34,14 +34,16 @@ export async function verifyAccountService({
 }
 
 export async function loginService({
+  authInstance,
   email,
   password,
 }: {
+  authInstance: AxiosInstance;
   email: string;
   password: string;
 }) {
   try {
-    const res = await publicRequest.post(`/auth/login`, {
+    const res = await authInstance.post(`/auth/login`, {
       email: email,
       password: password,
     });

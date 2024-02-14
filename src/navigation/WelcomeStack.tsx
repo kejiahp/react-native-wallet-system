@@ -14,12 +14,15 @@ import { ScaledSheet } from "react-native-size-matters";
 import AccountVerification from "../screens/AccountVerification";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Login from "../screens/Login";
+import AuthenticatedTab from "./AuthenticatedTab";
+import { AuthContext } from "../context/AuthContext";
 
 type WelcomeStackParamList = {
   Welcome: undefined;
   CreateAcct: undefined;
   AcctVerification: undefined;
   Login: undefined;
+  Dashboard: undefined;
 };
 export type WelcomeStackNavigationProp =
   StackNavigationProp<WelcomeStackParamList>;
@@ -34,102 +37,120 @@ const Stack = createStackNavigator<WelcomeStackParamList>();
 
 export default function WelcomeStackNavigator() {
   const { COLORS } = useContext(ThemeContext);
+  const { authState } = useContext(AuthContext);
+
   const navigation = useNavigation<WelcomeStackNavigationProp>();
 
   return (
     <Stack.Navigator initialRouteName="Welcome">
-      <Stack.Screen
-        name="Welcome"
-        component={Welcome}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="CreateAcct"
-        component={CreateAccount}
-        options={{
-          headerStyle: {
-            backgroundColor: COLORS.bgWhite,
-          },
-          headerLeftContainerStyle: {
-            paddingLeft: SIZES.small,
-          },
-          headerShadowVisible: false,
-          headerTitle: "",
-          headerLeft: (props) => (
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Feather name="chevron-left" size={30} color={COLORS.primary} />
-              <Label style={[styles.title, { color: COLORS.primary }]}>
-                Sign Up
-              </Label>
-            </TouchableOpacity>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="AcctVerification"
-        component={AccountVerification}
-        options={{
-          headerStyle: {
-            backgroundColor: COLORS.bgWhite,
-          },
-          headerLeftContainerStyle: {
-            paddingLeft: SIZES.small,
-          },
-          headerShadowVisible: false,
-          headerTitle: "",
-          headerLeft: (props) => (
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Feather name="chevron-left" size={30} color={COLORS.primary} />
-              <Label
-                style={[
-                  styles.title,
-                  { color: COLORS.primary, fontSize: SIZES.medium },
-                ]}
-              >
-                Go back
-              </Label>
-            </TouchableOpacity>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{
-          headerStyle: {
-            backgroundColor: COLORS.bgWhite,
-          },
-          headerLeftContainerStyle: {
-            paddingLeft: SIZES.small,
-          },
-          headerShadowVisible: false,
-          headerTitle: "",
-          headerLeft: (props) => (
-            <Label
-              style={[
-                styles.title,
-                { color: COLORS.primary, fontSize: SIZES.large },
-              ]}
-            >
-              Login
-            </Label>
-          ),
-        }}
-      />
+      {authState.authenticated ? (
+        <>
+          <Stack.Screen name={"Dashboard"} component={AuthenticatedTab} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen
+            name="Welcome"
+            component={Welcome}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="CreateAcct"
+            component={CreateAccount}
+            options={{
+              headerStyle: {
+                backgroundColor: COLORS.bgWhite,
+              },
+              headerLeftContainerStyle: {
+                paddingLeft: SIZES.small,
+              },
+              headerShadowVisible: false,
+              headerTitle: "",
+              headerLeft: (props) => (
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Feather
+                    name="chevron-left"
+                    size={30}
+                    color={COLORS.primary}
+                  />
+                  <Label style={[styles.title, { color: COLORS.primary }]}>
+                    Sign Up
+                  </Label>
+                </TouchableOpacity>
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="AcctVerification"
+            component={AccountVerification}
+            options={{
+              headerStyle: {
+                backgroundColor: COLORS.bgWhite,
+              },
+              headerLeftContainerStyle: {
+                paddingLeft: SIZES.small,
+              },
+              headerShadowVisible: false,
+              headerTitle: "",
+              headerLeft: (props) => (
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Feather
+                    name="chevron-left"
+                    size={30}
+                    color={COLORS.primary}
+                  />
+                  <Label
+                    style={[
+                      styles.title,
+                      { color: COLORS.primary, fontSize: SIZES.medium },
+                    ]}
+                  >
+                    Go back
+                  </Label>
+                </TouchableOpacity>
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerStyle: {
+                backgroundColor: COLORS.bgWhite,
+              },
+              headerLeftContainerStyle: {
+                paddingLeft: SIZES.small,
+              },
+              headerShadowVisible: false,
+              headerTitle: "",
+              headerLeft: (props) => (
+                <Label
+                  style={[
+                    styles.title,
+                    { color: COLORS.primary, fontSize: SIZES.large },
+                  ]}
+                >
+                  Login
+                </Label>
+              ),
+            }}
+          />
+        </>
+      )}
     </Stack.Navigator>
   );
 }
