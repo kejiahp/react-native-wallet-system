@@ -45,7 +45,13 @@ export default function WelcomeStackNavigator() {
     <Stack.Navigator initialRouteName="Welcome">
       {authState.authenticated ? (
         <>
-          <Stack.Screen name={"Dashboard"} component={AuthenticatedTab} />
+          <Stack.Screen
+            options={{
+              headerShown: false,
+            }}
+            name={"Dashboard"}
+            component={AuthenticatedTab}
+          />
         </>
       ) : (
         <>

@@ -8,6 +8,7 @@ import { View } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
+import { AuthProvider } from "./src/context/AuthContext";
 
 const queryClient = new QueryClient();
 
@@ -31,13 +32,15 @@ function Root() {
 
   return (
     <ThemeProvider>
-      <AxiosProvider>
-        <QueryClientProvider client={queryClient}>
-          <StatusBar style="auto" />
-          <View onLayout={prepare} />
-          <App />
-        </QueryClientProvider>
-      </AxiosProvider>
+      <AuthProvider>
+        <AxiosProvider>
+          <QueryClientProvider client={queryClient}>
+            <StatusBar style="auto" />
+            <View onLayout={prepare} />
+            <App />
+          </QueryClientProvider>
+        </AxiosProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

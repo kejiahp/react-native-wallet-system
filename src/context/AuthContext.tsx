@@ -16,7 +16,7 @@ type AuthStateType = {
 type AuthContextType = {
   authState: AuthStateType;
   setAuthState: React.Dispatch<SetStateAction<AuthStateType>>;
-  logOut: () => void;
+  logOut: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
@@ -25,8 +25,12 @@ export const AuthContext = createContext<AuthContextType>({
     refreshToken: undefined,
     authenticated: false,
   },
-  setAuthState: () => {},
-  logOut: () => {},
+  setAuthState: () => {
+    alert("funtion setAuthState is not available");
+  },
+  logOut: () => {
+    return Promise.resolve(alert("funtion logOut is not available"));
+  },
 });
 
 export function AuthProvider({ children }: PropsWithChildren) {

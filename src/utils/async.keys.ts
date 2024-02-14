@@ -3,5 +3,5 @@ export const asynckeys = {
 };
 
 export const securekeys = {
-  auth_tokens: "@auth_tokens",
+  auth_tokens: "auth_tkns",
 };

@@ -52,3 +52,20 @@ export async function loginService({
     throw error;
   }
 }
+
+export async function logoutService({
+  authInstance,
+  refresh_token,
+}: {
+  authInstance: AxiosInstance;
+  refresh_token: string;
+}) {
+  try {
+    const res = await authInstance.post(`/auth/logout`, {
+      refresh_token: refresh_token,
+    });
+    return res.data;
+  } catch (error: any) {
+    throw error;
+  }
+}

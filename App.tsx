@@ -1,6 +1,5 @@
 import "react-native-gesture-handler";
 
-import { StatusBar } from "expo-status-bar";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import WelcomeStackNavigator from "./src/navigation/WelcomeStack";
@@ -37,7 +36,6 @@ export default function App() {
       }
       setAuthStatusLoading("success");
     } catch (error: any) {
-      console.log(`Keychain Error: ${error.message}`);
       setAuthStatusLoading("error");
 
       setAuthState({

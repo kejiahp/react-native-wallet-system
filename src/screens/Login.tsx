@@ -26,7 +26,7 @@ import { securekeys } from "../utils/async.keys";
 export default function Login() {
   const { COLORS } = useContext(ThemeContext);
   const { publicAxios } = useContext(AxiosContext);
-  const { setAuthState } = useContext(AuthContext);
+  const { authState, setAuthState } = useContext(AuthContext);
 
   const {
     handleSubmit,
@@ -38,41 +38,37 @@ export default function Login() {
 
   const loginMtn = useMutation({
     mutationFn: loginService,
-    onSuccess: (data) => {
-      const datax: {
+    onSuccess: (data: {
+      message: string;
+      data: {
         access_token: string;
         refresh_token: string;
-      } = data.data;
-
-      notify({
-        variant: "success",
-        title: data.message || "Login successful",
-      });
-
+      };
+    }) => {
       setAuthState({
-        accessToken: datax.access_token,
-        refreshToken: datax.refresh_token,
+        accessToken: data.data.access_token,
+        refreshToken: data.data.refresh_token,
         authenticated: true,
       });
 
       saveToSecureStore(
         securekeys.auth_tokens,
         JSON.stringify({
-          accessToken: datax.access_token,
-          refreshToken: datax.refresh_token,
+          accessToken: data.data.access_token,
+          refreshToken: data.data.refresh_token,
         })
       )
         .then((res) => {
-          console.log(res);
-          console.log("login successful");
+          notify({
+            variant: "success",
+            title: data.message || "Login successful",
+          });
         })
         .catch((error) => {
-          console.log(error);
           console.log("save tokens to keychain failed");
         });
     },
     onError: (error: any) => {
-      console.log(error);
       if (error instanceof AxiosError) {
         if (error.response?.data.errors) {
           notify({
@@ -114,7 +110,7 @@ export default function Login() {
 
     loginMtn.mutate({
       authInstance: publicAxios,
-      email: inputData.email,
+      email: inputData.email.toLowerCase(),
       password: inputData.password,
     });
   };
@@ -138,6 +134,7 @@ export default function Login() {
               placeholder="example@email.com"
               keyboardType="email-address"
               onBlur={onBlur}
+              autoCapitalize="none"
               onChangeText={(value) => onChange(value)}
               value={value}
               errorMessage={errors.email?.message}

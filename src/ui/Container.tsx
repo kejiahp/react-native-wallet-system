@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { PropsWithChildren } from "react";
 import { scale } from "react-native-size-matters";
+import { SIZES } from "./style";
 
 type Props = {
   isScrollable?: boolean;
@@ -40,6 +41,6 @@ const styles = StyleSheet.create({
   },
   innerView: {
     flex: 1,
-    paddingHorizontal: scale(20),
+    paddingHorizontal: SIZES.small,
   },
 });
